@@ -43,9 +43,22 @@ function displayComments(comments){
         const text = document.createElement("p");
         text.textContent = comment.body;
 
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent="Delete";
+        deleteBtn.addEventListener("click",()=>{
+            handleDeleteComment(comment.id,li);
+        })
+        
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+        editBtn.addEventListener("click",()=>{
+            handleEditComment(comment,li,editBtn,deleteBtn);
+        });
 
         li.appendChild(name);
         li.appendChild(text);
+        li.appendChild(deleteBtn);
+        li.appendChild(editBtn);
         list.appendChild(li);
     });
 }
@@ -85,4 +98,71 @@ function addCommentToUI(comment){
     li.appendChild(nameEl);
     li.appendChild(bodyEl);
     list.appendChild(li);
+}
+
+async function handleDeleteComment(commentId, liElement){
+    const confirmDelete = confirm("Delete this comment?");
+    if (!confirmDelete) return;
+
+    await deleteComment(commentId);
+
+    liElement.remove();
+}
+
+function handleEditComment(comment,liElement, editBtn, deleteBtn){
+    if (liElement.querySelector("textarea")) return; // prevent multiple edits at the same time
+    editBtn.disabled = true;
+    deleteBtn.disabled = true;
+
+    const nameElement = liElement.querySelector("strong");
+    const nameInput = document.createElement("input");
+    nameInput.value = comment.name;
+    const textElement = liElement.querySelector("p");
+    const textarea = document.createElement("textarea");
+    textarea.value = comment.body;
+    const saveBtn = document.createElement("button");
+    saveBtn.textContent = "Save";
+    const cancelBtn = document.createElement("button");
+    cancelBtn.textContent = "Cancel";
+
+    liElement.replaceChild(nameInput, nameElement);
+    liElement.replaceChild(textarea,textElement);
+    liElement.appendChild(saveBtn);
+    liElement.appendChild(cancelBtn);
+
+    nameInput.focus();
+
+    saveBtn.addEventListener("click", async()=>{
+        const updatedComment = {
+            ...comment,
+            name: nameInput.value,
+            body: textarea.value
+        };
+        await updateComment(comment.id,updatedComment);
+        
+        nameElement.textContent = nameInput.value;
+        textElement.textContent = textarea.value;
+
+        liElement.replaceChild(nameElement, nameInput);
+        liElement.replaceChild(textElement, textarea);
+
+        saveBtn.remove();
+        cancelBtn.remove();
+        editBtn.disabled=false;
+        deleteBtn.disabled=false;
+    });
+
+    cancelBtn.addEventListener("click", ()=>{
+        liElement.replaceChild(nameElement, nameInput);
+        liElement.replaceChild(textElement, textarea);
+        saveBtn.remove();
+        cancelBtn.remove();
+        editBtn.disabled=false;
+        deleteBtn.disabled=false;
+    });
+}
+
+function updateCommentUI(liElement, newText){
+    const paragraph = liElement.querySelector("p");
+    paragraph.textContent = newText;
 }
