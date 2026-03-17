@@ -11,6 +11,10 @@ async function init() {
     
     displayPost(post, users);
     displayComments(comments);
+
+    document
+    .getElementById("submitCommentBtn")
+    .addEventListener("click", handleAddComment);
 }
 
 function getPostIdFromURL(){
@@ -44,4 +48,41 @@ function displayComments(comments){
         li.appendChild(text);
         list.appendChild(li);
     });
+}
+
+async function handleAddComment() {
+    const nameInput = document.getElementById("commentName");
+    const bodyInput = document.getElementById("commentBody");
+    const name = nameInput.value;
+    const body = bodyInput.value;
+    const postId = getPostIdFromURL();
+
+    if (!name || !body) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    const newComment ={
+        postId: postId,
+        name: name,
+        body:body
+    };
+
+    const createdDocument = await createComment(newComment);
+    addCommentToUI(createdDocument);
+    nameInput.value="";
+    bodyInput.value="";
+}
+
+function addCommentToUI(comment){
+    const list = document.getElementById("commentList");
+    const li = document.createElement("li");
+    const nameEl = document.createElement("strong");
+    nameEl.textContent = comment.name;
+    const bodyEl = document.createElement("p")
+    bodyEl.textContent = comment.body;
+
+    li.appendChild(nameEl);
+    li.appendChild(bodyEl);
+    list.appendChild(li);
 }

@@ -32,3 +32,14 @@ async function getComments(postId){
     }
     return response.json();
 }
+
+async function createComment(commentData){
+    const response = await fetch(`${API_BASE_URL}/comments`,{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify(commentData)
+    });
+    return response.json();
+}
