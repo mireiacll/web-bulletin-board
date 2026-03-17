@@ -8,6 +8,12 @@ async function init(){
     displayPosts(posts,users);
 }
 
+document
+.getElementById("createPostBtn")
+.addEventListener("click", ()=>{
+    window.location.href = "form.html";
+});
+
 function displayPosts(posts,users){
     const tableBody = document.getElementById("postTableBody");
     posts.forEach(post => {
@@ -34,3 +40,4 @@ function displayPosts(posts,users){
         tableBody.appendChild(row);
     });
 }
+

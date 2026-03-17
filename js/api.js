@@ -43,3 +43,49 @@ async function createComment(commentData){
     });
     return response.json();
 }
+
+async function deleteComment(id) {
+    const response = await fetch(`${API_BASE_URL}/comments/${id}`,{
+        method: "DELETE"
+    })
+    return response;
+}
+
+async function updateComment(id,data){
+    const response = await fetch(`${API_BASE_URL}/comments/${id}`,{
+        method: "PUT",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify(data)
+    });
+    return response.json();
+}
+
+async function createPost(data){
+    const response = await fetch(`${API_BASE_URL}/posts`,{
+        method: "POST",
+        headers:{
+            "Content-type": "application/json"
+        },
+        body:JSON.stringify(data)
+    });
+    return response.json();
+}
+
+async function deletePost(id){
+    await fetch(`${API_BASE_URL}/posts/${id}`,{
+        method:"DELETE"
+    })
+}
+
+async function updatePost(id,data){
+    const response = await fetch(`${API_BASE_URL}/posts/${id}`,{
+        method: "PUT",
+        headers:{
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+    return response.json();
+}

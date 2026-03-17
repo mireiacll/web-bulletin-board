@@ -15,6 +15,24 @@ async function init() {
     document
     .getElementById("submitCommentBtn")
     .addEventListener("click", handleAddComment);
+
+    document
+    .getElementById("editPostBtn")
+    .addEventListener("click",()=>{
+        const postId = getPostIdFromURL();
+        window.location.href=`form.html?id=${postId}`;
+    })
+
+
+    document
+    .getElementById("deletePostBtn")
+    .addEventListener("click", async()=>{
+        const postId = getPostIdFromURL();
+        const confirmDelete = confirm("Delete this post?");
+        if(!confirmDelete) return;
+        await deletePost(postId);
+        window.location.href=`index.html`
+    });
 }
 
 function getPostIdFromURL(){
@@ -160,9 +178,4 @@ function handleEditComment(comment,liElement, editBtn, deleteBtn){
         editBtn.disabled=false;
         deleteBtn.disabled=false;
     });
-}
-
-function updateCommentUI(liElement, newText){
-    const paragraph = liElement.querySelector("p");
-    paragraph.textContent = newText;
 }
