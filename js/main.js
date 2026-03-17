@@ -1,8 +1,10 @@
 document.addEventListener("DOMContentLoaded",init);
 
 async function init(){
-    const posts = await getPosts();
-    const users = await getUsers();
+    const [posts, users] = await Promise.all([
+        getPosts(),
+        getUsers()
+    ]);
     displayPosts(posts,users);
 }
 
