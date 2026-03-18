@@ -1,11 +1,22 @@
 document.addEventListener("DOMContentLoaded",init);
 
+let currentPage = 1;
+const postsPerPage = 20;
+
+let allPosts=[];
+let allUsers=[];
+
 async function init(){
     const [posts, users] = await Promise.all([
         getPosts(),
         getUsers()
     ]);
-    displayPosts(posts,users);
+    allPosts=posts;
+    allUsers=users;
+    displayPosts(allPosts,allUsers);
+    updatePagination();
+    document.getElementById("prevBtn").addEventListener("click",prevPage);
+    document.getElementById("nextBtn").addEventListener("click",nextPage);
 }
 
 document
@@ -16,7 +27,11 @@ document
 
 function displayPosts(posts,users){
     const tableBody = document.getElementById("postTableBody");
-    posts.forEach(post => {
+    tableBody.innerHTML="";
+    const start = (currentPage-1)*postsPerPage;
+    const end = start + postsPerPage;
+    const paginatedPosts = posts.slice(start,end);
+    paginatedPosts.forEach(post => {
         const user = users.find(u => u.id ===post.userId);
 
         const row = document.createElement("tr");
@@ -41,3 +56,25 @@ function displayPosts(posts,users){
     });
 }
 
+function nextPage(){
+    const totalPages = Math.ceil(allPosts.length/postsPerPage);
+    if (currentPage<totalPages){
+        currentPage++;
+        displayPosts(allPosts,allUsers);
+        updatePagination();
+    }
+}
+
+function prevPage(){
+    if (currentPage>1){
+        currentPage--;
+        displayPosts(allPosts,allUsers);
+        updatePagination();
+    }
+}
+
+function updatePagination(){
+    const pageInfo = document.getElementById("pageInfo");
+    const totalPages = Math.ceil(allPosts.length / postsPerPage);
+    pageInfo.textContent = `Page ${currentPage} / ${totalPages}`;
+}

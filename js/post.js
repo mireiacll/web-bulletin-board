@@ -23,7 +23,6 @@ async function init() {
         window.location.href=`form.html?id=${postId}`;
     })
 
-
     document
     .getElementById("deletePostBtn")
     .addEventListener("click", async()=>{
@@ -33,6 +32,12 @@ async function init() {
         await deletePost(postId);
         window.location.href=`index.html`
     });
+
+    document
+    .getElementById("backToListBtn")
+    .addEventListener("click",()=>{
+        window.location.href = "index.html"
+    })
 }
 
 function getPostIdFromURL(){
@@ -48,7 +53,7 @@ function displayPost(post,users){
     const user = users.find(u=> u.id === post.userId);
 
     titleEl.textContent = post.title;
-    authorEl.textContent = "by: " + user.username;
+    authorEl.textContent = `by: ${user.username} (${user.name} - ${user.email})`;
     bodyEl.textContent = post.body;
 }
 

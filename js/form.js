@@ -10,6 +10,13 @@ async function init(){
     document
     .getElementById("submitPostBtn")
     .addEventListener("click",handleSubmit);
+
+    document.
+    getElementById("cancelPostBtn")
+    .addEventListener("click",()=>{
+        //window.location.href = "index.html";
+        window.history.back()
+    });
 }
 
 function getPostIdFromURL(){
@@ -43,7 +50,7 @@ async function handleSubmit(){
         } else{
             await createPost(postData);
         }
-        window.location.href="index.html"
+        window.history.back()
     } catch(errort){
         alert("Error saving post");
     }
