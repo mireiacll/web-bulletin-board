@@ -118,9 +118,23 @@ function addCommentToUI(comment){
     const bodyEl = document.createElement("p")
     bodyEl.textContent = comment.body;
 
-    li.appendChild(nameEl);
-    li.appendChild(bodyEl);
-    list.appendChild(li);
+    const deleteBtn = document.createElement("button");
+        deleteBtn.textContent="Delete";
+        deleteBtn.addEventListener("click",()=>{
+            handleDeleteComment(comment.id,li);
+        })
+        
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+        editBtn.addEventListener("click",()=>{
+            handleEditComment(comment,li,editBtn,deleteBtn);
+        });
+
+        li.appendChild(nameEl);
+        li.appendChild(bodyEl);
+        li.appendChild(deleteBtn);
+        li.appendChild(editBtn);
+        list.appendChild(li);
 }
 
 async function handleDeleteComment(commentId, liElement){
@@ -162,6 +176,9 @@ function handleEditComment(comment,liElement, editBtn, deleteBtn){
             body: textarea.value
         };
         await updateComment(comment.id,updatedComment);
+
+        comment.name = nameInput.value;
+        comment.body = textarea.value;
         
         nameElement.textContent = nameInput.value;
         textElement.textContent = textarea.value;

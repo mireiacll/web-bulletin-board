@@ -27,6 +27,7 @@ function getPostIdFromURL(){
 function fillForm(post){
     document.getElementById("titleInput").value = post.title;
     document.getElementById("bodyInput").value = post.body;
+    currentUserId = post.userId;
 }
 
 async function handleSubmit(){
@@ -41,7 +42,7 @@ async function handleSubmit(){
     const postData = {
         title: title,
         body:body,
-        userId:1 //Required by the API
+        userId: currentUserId //Required by the API
     };
 
     try{
