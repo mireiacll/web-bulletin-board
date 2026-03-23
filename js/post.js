@@ -50,7 +50,9 @@ function displayPost(post,users){
     const authorEl = document.getElementById("postAuthor");
     const bodyEl = document.getElementById("postBody");
 
-    const user = users.find(u=> u.id === post.userId);
+    const user = users.find(
+        u => Number(u.id) === Number(post.userId)
+    );
 
     titleEl.textContent = post.title;
     authorEl.textContent = `by: ${user.username} (${user.name} - ${user.email})`;

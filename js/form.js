@@ -42,7 +42,7 @@ async function handleSubmit(){
     const postData = {
         title: title,
         body:body,
-        userId: currentUserId //Required by the API
+        userId: 1 //Required by the API
     };
 
     try{

@@ -32,7 +32,9 @@ function displayPosts(posts,users){
     const end = start + postsPerPage;
     const paginatedPosts = posts.slice(start,end);
     paginatedPosts.forEach(post => {
-        const user = users.find(u => u.id ===post.userId);
+        const user = users.find(
+            u => Number(u.id) === Number(post.userId)
+        );
 
         const row = document.createElement("tr");
 
