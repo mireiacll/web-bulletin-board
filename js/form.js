@@ -14,8 +14,8 @@ async function init(){
     document.
     getElementById("cancelPostBtn")
     .addEventListener("click",()=>{
-        //window.location.href = "index.html";
-        window.history.back()
+        window.location.href = "index.html";
+        //window.history.back()
     });
 }
 

@@ -7,16 +7,20 @@ let allPosts=[];
 let allUsers=[];
 
 async function init(){
-    const [posts, users] = await Promise.all([
-        getPosts(),
-        getUsers()
-    ]);
-    allPosts=posts;
-    allUsers=users;
-    displayPosts(allPosts,allUsers);
-    updatePagination();
-    document.getElementById("prevBtn").addEventListener("click",prevPage);
-    document.getElementById("nextBtn").addEventListener("click",nextPage);
+    try {
+        const [posts, users] = await Promise.all([
+            getPosts(),
+            getUsers()
+        ]);
+        allPosts=posts;
+        allUsers=users;
+        displayPosts(allPosts,allUsers);
+        updatePagination();
+        document.getElementById("prevBtn").addEventListener("click",prevPage);
+        document.getElementById("nextBtn").addEventListener("click",nextPage);
+    } catch (error){
+        alert("Error getting post id");
+    }
 }
 
 document
@@ -27,7 +31,8 @@ document
 
 function displayPosts(posts,users){
     const tableBody = document.getElementById("postTableBody");
-    tableBody.innerHTML="";
+    //tableBody.innerHTML="";
+    tableBody.replaceChildren();
     const start = (currentPage-1)*postsPerPage;
     const end = start + postsPerPage;
     const paginatedPosts = posts.slice(start,end);

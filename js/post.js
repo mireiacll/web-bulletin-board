@@ -3,41 +3,55 @@ document.addEventListener("DOMContentLoaded", init);
 async function init() {
     const postId = getPostIdFromURL();
     //slightly faster wait because doesn't wait after each request but alltogether
-    const [post, users, comments] = await Promise.all([
-        getPost(postId),
-        getUsers(),
-        getComments(postId)
-    ]);
-    
-    displayPost(post, users);
-    displayComments(comments);
+    try {
+        const [post, users, comments] = await Promise.all([
+            getPost(postId),
+            getUsers(),
+            getComments(postId)
+        ]);
+        displayPost(post, users);
+        displayComments(comments);
 
-    document
-    .getElementById("submitCommentBtn")
-    .addEventListener("click", handleAddComment);
+        document
+        .getElementById("submitCommentBtn")
+        .addEventListener("click", handleAddComment);
 
-    document
-    .getElementById("editPostBtn")
-    .addEventListener("click",()=>{
-        const postId = getPostIdFromURL();
-        window.location.href=`form.html?id=${postId}`;
-    })
+        document
+        .getElementById("editPostBtn")
+        .addEventListener("click",()=>{
+            const postId = getPostIdFromURL();
+            window.location.href=`form.html?id=${postId}`;
+        })
 
-    document
-    .getElementById("deletePostBtn")
-    .addEventListener("click", async()=>{
-        const postId = getPostIdFromURL();
-        const confirmDelete = confirm("Delete this post?");
-        if(!confirmDelete) return;
-        await deletePost(postId);
-        window.location.href=`index.html`
-    });
+        document
+        .getElementById("deletePostBtn")
+        .addEventListener("click", async()=>{
+            const postId = getPostIdFromURL();
+            const confirmDelete = confirm("Delete this post?");
+            if(!confirmDelete) return;
+            try {
+                // delete related comments first
+                const comments = await getComments(postId);
+                await Promise.all(
+                    comments.map(c => deleteComment(c.id))
+                );
+                // then delete post
+                await deletePost(postId);
+                window.location.href = "index.html";
+            } catch (error) {
+                alert("Error deleting post");
+            }
+            window.location.href=`index.html`
+        });
 
-    document
-    .getElementById("backToListBtn")
-    .addEventListener("click",()=>{
-        window.location.href = "index.html"
-    })
+        document
+        .getElementById("backToListBtn")
+        .addEventListener("click",()=>{
+            window.location.href = "index.html"
+        })
+    } catch (error){
+        alert("Error getting post id");
+    }
 }
 
 function getPostIdFromURL(){
