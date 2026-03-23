@@ -1,8 +1,7 @@
 // handle all the HTTP requests
 //const API_BASE_URL = "https://jsonplaceholder.typicode.com"
 //const API_BASE_URL = "http://localhost:3000";
-const API_BASE_URL =
-  window.location.hostname === "localhost"
+const API_BASE_URL = (window.location.hostname === "localhost" || window.location.hostname === "")
     ? "http://localhost:3000"
     : "https://jsonplaceholder.typicode.com";
 
