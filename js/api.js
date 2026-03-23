@@ -42,6 +42,9 @@ async function createComment(commentData){
         },
         body: JSON.stringify(commentData)
     });
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
     return response.json();
 }
 
@@ -49,6 +52,9 @@ async function deleteComment(id) {
     const response = await fetch(`${API_BASE_URL}/comments/${id}`,{
         method: "DELETE"
     })
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
     return response;
 }
 
@@ -60,6 +66,9 @@ async function updateComment(id,data){
         },
         body: JSON.stringify(data)
     });
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
     return response.json();
 }
 
@@ -71,6 +80,9 @@ async function createPost(data){
         },
         body:JSON.stringify(data)
     });
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
     return response.json();
 }
 
@@ -78,6 +90,9 @@ async function deletePost(id){
     await fetch(`${API_BASE_URL}/posts/${id}`,{
         method:"DELETE"
     })
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
 }
 
 async function updatePost(id,data){
@@ -88,5 +103,8 @@ async function updatePost(id,data){
         },
         body: JSON.stringify(data)
     });
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
     return response.json();
 }
