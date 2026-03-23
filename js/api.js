@@ -1,6 +1,10 @@
 // handle all the HTTP requests
 //const API_BASE_URL = "https://jsonplaceholder.typicode.com"
-const API_BASE_URL = "http://localhost:3000";
+//const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:3000"
+    : "https://jsonplaceholder.typicode.com";
 
 async function getPosts() {
     const response =  await fetch(`${API_BASE_URL}/posts`);
